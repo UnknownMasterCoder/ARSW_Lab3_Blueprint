@@ -9,6 +9,7 @@ import edu.eci.arsw.blueprints.model.Blueprint;
 import edu.eci.arsw.blueprints.model.Point;
 import edu.eci.arsw.blueprints.persistence.BlueprintNotFoundException;
 import edu.eci.arsw.blueprints.persistence.BlueprintPersistenceException;
+import edu.eci.arsw.blueprints.persistence.BlueprintsFilter;
 import edu.eci.arsw.blueprints.persistence.BlueprintsPersistence;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -24,13 +25,17 @@ import org.springframework.stereotype.Service;
 public class BlueprintsServices {
    
     @Autowired
-    BlueprintsPersistence bpp = null;
+    BlueprintsPersistence bpp;
+    
+    @Autowired
+    BlueprintsFilter bpf;
     
     public void addNewBlueprint(Blueprint bp) throws BlueprintPersistenceException{
-        bpp.saveBlueprint(bp);
+        Blueprint bpWithFilter = bpf.blueprintsFilter(bp);
+        bpp.saveBlueprint(bpWithFilter);
     }
     
-    public Set<Blueprint> getAllBlueprints() throws BlueprintNotFoundException{
+    public Set<Blueprint> getAllBlueprints() throws BlueprintNotFoundException{        
         Set<Blueprint> allBlueprints = bpp.getAllBlueprints();
         return allBlueprints;
     }
@@ -43,8 +48,12 @@ public class BlueprintsServices {
      * @throws BlueprintNotFoundException if there is no such blueprint
      */
     public Blueprint getBlueprint(String author,String name) throws BlueprintNotFoundException{
+        /*Blueprint blueprint = bpp.getBlueprint(author, name);
+        Blueprint bpWithFilter = bpf.blueprintsFilter(blueprint);
+        return bpWithFilter; */
+        
         Blueprint blueprint = bpp.getBlueprint(author, name);
-        return blueprint; 
+        return blueprint;
     }
     
     /**
@@ -58,7 +67,14 @@ public class BlueprintsServices {
         return blueprintsByAuthor; 
     }
     
-    public void putBlueprint(String author, String blueprintName, Point[] points) throws BlueprintPersistenceException{
+    public void putBlueprint(String author, String blueprintName, Point[] points) throws BlueprintPersistenceException, BlueprintNotFoundException{
+        
+        /*
+        bpp.putBlueprint(author, blueprintName, points);
+        Blueprint bp = bpp.getBlueprint(author, blueprintName);
+        Blueprint bpWithFilter = bpf.blueprintsFilter(bp);
+        bpp.saveBlueprint(bpWithFilter);
+        */
         bpp.putBlueprint(author, blueprintName, points);
     }
     

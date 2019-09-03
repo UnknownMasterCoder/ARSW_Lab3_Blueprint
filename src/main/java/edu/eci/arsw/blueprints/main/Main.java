@@ -19,7 +19,7 @@ public class Main {
         ApplicationContext ac = new ClassPathXmlApplicationContext("applicationContext.xml");
         BlueprintsServices bps = ac.getBean(BlueprintsServices.class);
         
-        System.out.println(bps.getAllBlueprints());
+        //System.out.println(bps.getAllBlueprints());
 
         //System.out.println(bps.getBlueprint("asdads","la la la "));
     }  
